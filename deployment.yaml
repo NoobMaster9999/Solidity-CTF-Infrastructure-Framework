@@ -1,0 +1,4 @@
+contract_balance: "9100000000000000000000" # Amount in wei that the challenge contract has
+player_balance: "9000000000000000000" # Amount in wei the player wallet has
+constructor_arguments: ["secret","secret2"] # arguments for the constructor
+timeout: 300 # Timeout for the instance in seconds
