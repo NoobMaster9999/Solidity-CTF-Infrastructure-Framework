@@ -27,6 +27,15 @@ How the instancer basically works:
 
 * A get flag feature that allows people to get the flag based on their hash
 
+# To-Do
+
+- [ ] Make a docker container
+- [ ] Build script to download all required tools
+- [ ] Customizable timeout
+- [ ] Make a script to start the instancer
+- [ ] Lock/Unlock wallet mechanism (????)
+
+
 # Creator
 
 Solidity CTF Instancer Framework is created by NoobMaster. If you have any questions and/or feedback regarding any part of the instancer, please feel free to contact me on discord: `noobmaster_1337`
