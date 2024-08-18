@@ -34,6 +34,7 @@ How the instancer basically works:
 - [ ] Customizable timeout
 - [ ] Make a script to start the instancer
 - [ ] Lock/Unlock wallet mechanism (????)
+- [ ] Use solc python module to compile install of truffle
 
 
 # Creator
