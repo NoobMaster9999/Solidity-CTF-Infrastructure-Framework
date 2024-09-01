@@ -31,10 +31,14 @@ How the instancer basically works:
 
 - [ ] Make a docker container
 - [ ] Build script to download all required tools
-- [ ] Customizable timeout
+- [X] Customizable timeout
 - [ ] Make a script to start the instancer
 - [ ] Lock/Unlock wallet mechanism (????)
-- [ ] Use solc python module to compile install of truffle
+- [X] Use solc python module to compile install of truffle
+- [ ] Make the constructor arguments actually work
+- [ ] Special hashed-contracts + extra security feature
+- [ ] Requirements.txt for python packages
+- [ ] If someone closes the connection during the deployment (Ctrl C), then stop everything (such as RPC) before exiting
 
 
 # Creator

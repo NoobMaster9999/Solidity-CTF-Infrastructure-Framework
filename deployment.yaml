@@ -1,4 +1,6 @@
-contract_balance: "9100000000000000000000" # Amount in wei that the challenge contract has
-player_balance: "9000000000000000000" # Amount in wei the player wallet has
+contract_balance: "2814749767106559999" # Amount in wei that the challenge contract has
+player_balance: "281474976710650" # Amount in wei the player wallet has
 constructor_arguments: ["secret","secret2"] # arguments for the constructor
-timeout: 300 # Timeout for the instance in seconds
+timeout: 500 # Timeout for the instance in seconds
+public_ip: 127.0.0.1 # The public IP. This should be set to the public IP of the VM this is running on!
+solidity_version: "0.7.0" # The solidity version used for the challenge

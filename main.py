@@ -42,9 +42,8 @@ def get_flag():
 		exit(0)
 	try:
 		web3 = Web3(HTTPProvider(rpc_url))
-		f = open(f'build/contracts/Chall{player_hash}.json')
-		contract_json = json.load(f)
-		abi = contract_json['abi']
+		f=open('abi','r').read()
+		abi=eval(f)
 		bank = web3.eth.contract(address=contract_address,abi=abi)
 		if bank.functions.isChallSolved().call({'from':wallet_address}):
 			print(f'Flag: ' + open('flag.txt').read().strip())

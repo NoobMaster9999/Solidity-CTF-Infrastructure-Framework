@@ -1,10 +1,10 @@
 from web3 import Web3, HTTPProvider
 import json
-web3 = Web3(HTTPProvider("http://127.0.0.1:43895")) # Replace with the actual RPC
-contract_address = "0x9129caA5084307b5a7ebB3F7080252027d455287" # Replace with the actual contract address
-wallet="0xAbB0594c56951ddc5f62B25a6be71869b911A923" # Replace with the actual wallet
+web3 = Web3(HTTPProvider("http://127.0.0.1:47518")) # Replace with the actual RPC
+contract_address = "0xf912C2ABE58475D105dF678c327293FDc39b2AA7" # Replace with the actual contract address
+wallet="0x9A2bb5637DC2A7f76E29cba1BD7Dfc65286230ac" # Replace with the actual wallet
 
-f = open('./build/contracts/Bankbc310c2c3caa05743494615afcb56dc284ed2470379cb05d9c1acb85a3d2e345.json','r')
+f = open('./build/contracts/Chall.json','r')
 contract_json=json.load(f)
 
 abi=contract_json['abi']

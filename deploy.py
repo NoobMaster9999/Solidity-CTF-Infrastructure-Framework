@@ -6,68 +6,37 @@ import random
 import time
 from hashlib import sha256
 import sys
-contract_balance = int(int(sys.argv[1]))
-player_balance = int(int(sys.argv[2]))
-
-def compile():
-	try:
-		subprocess.run(["truffle","compile"],capture_output=True)
-		return 1
-	except:
-		return 0
-
-
-public_ip = "127.0.0.1"
+import yaml
+from solcx import compile_standard,install_solc,set_solc_version
+data = yaml.safe_load(open('deployment.yaml'))
+contract_balance = data['contract_balance']
+player_balance = data['player_balance']
+solidity_version = data['solidity_version']
+timeout = int(data['timeout'])
+public_ip = data['public_ip']
+install_solc(solidity_version)
+set_solc_version(solidity_version)
+# def compile(hashed):
+# 	global compiled
+# 	compiled = compile_standard({
+#     "language": "Solidity",
+#     "sources": {
+#         f"Chall{hashed}.sol": {
+#             "content": open(f'contracts/Chall-{hashed}.sol').read()
+#         }
+#     },
+#     "settings": {
+#         "outputSelection": {
+#             "*": {
+#                 "*": ["abi", "metadata", "evm.bytecode", "evm.sourceMap"]
+#             }
+#         }
+#     }
+# })
 
 def fix(hashed,wallet):
-	contract = """
-	pragma solidity ^0.6.0;
-contract Chall {
-    uint[4] cost = [5 ether,11 ether,23 ether,1337 ether];
-   uint[4] bought = [0,0,0,0];
-    function reset() public payable {
-        bought[0] = 0;
-        bought[1] = 0;
-        bought[2] = 0;
-        bought[3] = 0;
-    }
-    constructor() public {
-        reset();
-    }
-    function getMoney() public payable {
-    // This is used for deployment, can be safely ignored
-    }
- 
-    function buy(uint item, uint quantity) public payable {
-    	//require(msg.sender==YOUR_WALLET_ADDRESS); // This is for security purposes
-        require(0 <= item && item<= 3, "Item does not exist!");
-        require(0 < quantity && quantity <= 10, "Cannot buy more than 10 at once!");
-        require(msg.value == (cost[item] * quantity), "Payment error!");
-        bought[item] = quantity;
-    }
-
-    function refund(uint item, uint quantity) public payable {
-    	//require(msg.sender==YOUR_WALLET_ADDRESS); // This is for security purposes
-        require(0 <= item && item <= 3, "Item does not exist!");
-        require(0 < quantity && quantity <= 10, "Cannot refund more than 10 at once!");
-        require(bought[item] > 0, "You do not have that item!");
-        require(bought[item] >= quantity, "Quantity is greater than amount!");
-        msg.sender.call.value((cost[item] * quantity))("");
-        bought[item] -= quantity;
-    }
-
-    function isChallSolved() public view returns (bool solved) {
-        if (bought[3] > 0) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-}
-	"""
-	contract = contract.replace("YOUR_WALLET_ADDRESS",wallet)
+	contract = open('Chall.sol').read()
+	# contract = contract.replace("YOUR_WALLET_ADDRESS",wallet)
 	contract = contract.replace("contract Chall",f"contract Chall{hashed}")
 	f = open(f'contracts/Chall-{hashed}.sol','w')
 	f.write(contract)
@@ -97,14 +66,19 @@ def make_instance():
 	web3 = Web3(Web3.HTTPProvider(f"http://localhost:{port}"))
 	player_wallet = web3.eth.account.from_key(your_private_key)
 	fix(hashed,player_wallet.address)
-	compile()
+	# compile(hashed)
 	# print("compiled, exiting...")
 	# exit(0)
-	f = open(f'build/contracts/Chall{hashed}.json','r')
-	os.system(f"rm build/contracts/Chall{hashed}.json")
-	contract_json = json.load(f)
-	abi = contract_json['abi']
-	bytecode = contract_json['bytecode']
+	# f = open(f'build/contracts/Chall{hashed}.json','r')
+	# os.system(f"rm build/contracts/Chall{hashed}.json")
+	# contract_json = json.load(f)
+	# abi = contract_json['abi']
+	# bytecode = contract_json['bytecode']
+	# print(compiled['contracts'][f'Chall{hashed}.sol'])
+	# contract_interface = compiled['contracts'][f'Chall{hashed}.sol'][f'Chall{hashed}']
+	bytecode = open('bytecode','r').read()
+	f=open('abi','r').read()
+	abi=eval(f)
 	shop = web3.eth.contract(abi=abi, bytecode=bytecode)
 	wallet = web3.eth.account.from_key(my_private_key)
 	web3.geth.personal.unlock_account(wallet.address, password, 0)
@@ -117,7 +91,7 @@ def make_instance():
 	gas_limit = shop.functions.getMoney().estimate_gas({'from': wallet.address})
 	# gas_limit = 999999
 	total_gas_cost = gas_price * gas_limit
-	intial_deposit = shop.functions.getMoney().build_transaction({'from':wallet.address,'value':contract_balance-total_gas_cost,'gas':gas_limit,'gasPrice':gas_price})
+	intial_deposit = shop.functions.getMoney().build_transaction({'from':wallet.address,'value':int(contract_balance)-total_gas_cost,'gas':gas_limit,'gasPrice':gas_price})
 	tx_hash = web3.eth.send_transaction(intial_deposit)
 	tx_receipt = web3.eth.wait_for_transaction_receipt(tx_hash)
 	web3.geth.personal.lock_account(wallet.address)
@@ -130,14 +104,15 @@ def make_instance():
 
 info = make_instance()
 print("contract address: " + info[0] + "\n" + "rpc-url: " + info[1] + "\n" + "Wallet private-key: " + info[2] + "\n" + "Wallet address: " + info[3] + "\n" + "Secret: " + info[4] + "\n" + "Please save the provided secret, it will be needed to get the flag")
-time.sleep(5)
+time.sleep(timeout)
 os.system(f"rm -rf ./{info[4]}/")
 try:
-	# os.remove(f"./contracts/Chall-{info[4]}.sol")
+	os.remove(f"./contracts/Chall-{info[4]}.sol")
 	# os.remove(f"./build/contracts/Chall{info[4]}.json")
-	abcd
+	# abcd
 except:
-	print("Something failed!")
+	pass
+	# print("Something 	failed!")
 finally:
 	ganache.terminate()	
 	intercept.terminate()
