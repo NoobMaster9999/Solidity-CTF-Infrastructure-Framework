@@ -14,6 +14,9 @@ player_balance = data['player_balance']
 solidity_version = data['solidity_version']
 timeout = int(data['timeout'])
 public_ip = data['public_ip']
+mempool = data['mempool']
+if mempool:
+	mempool_time = int(data['mempool_time'])
 install_solc(solidity_version)
 set_solc_version(solidity_version)
 # def compile(hashed):
@@ -36,9 +39,12 @@ set_solc_version(solidity_version)
 
 def fix(hashed,wallet):
 	contract = open('Chall.sol').read()
+	x=contract.index('contract')
+	y=contract[x:].index('{')+x
+	contract_name = contract[x:y].replace(' ','').replace('contract','')
 	# contract = contract.replace("YOUR_WALLET_ADDRESS",wallet)
-	contract = contract.replace("contract Chall",f"contract Chall{hashed}")
-	f = open(f'contracts/Chall-{hashed}.sol','w')
+	contract = contract.replace(f"contract {contract_name}",f"contract {contract_name}{hashed}")
+	f = open(f'contracts/{contract_name}-{hashed}.sol','w')
 	f.write(contract)
 	f.close()
 
@@ -54,7 +60,10 @@ def make_instance():
 	# print(port)
 	port = random.randint(40001,49999)
 	while True:
-		ganache = subprocess.Popen(["ganache","--secure","--passphrase",password,"--port",str(port+10001),"--host","127.0.0.1",f'--account="{my_private_key},{str(int(int(contract_balance)+(0.1*10e17)))}"',f'--account="{your_private_key},{str(int(player_balance))}"',"--gasPrice","0","--gasLimit","999999"],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		if mempool:
+			ganache = subprocess.Popen(["ganache","--secure","--passphrase",password,"--port",str(port+10001),"--host","127.0.0.1","-b",f'{mempool_time}',f'--account="{my_private_key},{str(int(int(contract_balance)+(0.1*10e17)))}"',f'--account="{your_private_key},{str(int(player_balance))}"',"--gasPrice","0","--gasLimit","999999"],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		else:
+			ganache = subprocess.Popen(["ganache","--secure","--passphrase",password,"--port",str(port+10001),"--host","127.0.0.1",f'--account="{my_private_key},{str(int(int(contract_balance)+(0.1*10e17)))}"',f'--account="{your_private_key},{str(int(player_balance))}"',"--gasPrice","0","--gasLimit","999999"],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		time.sleep(3)
 		if ganache.poll() is None:
 			break

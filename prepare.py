@@ -23,7 +23,11 @@ def compile():
 })
 
 compile()
-contract_interface = compiled['contracts'][f'Chall.sol'][f'Chall']
+contract = open('Chall.sol').read()
+x=contract.index('contract')
+y=contract[x:].index('{')+x
+contract_name = contract[x:y].replace(' ','').replace('contract','')
+contract_interface = compiled['contracts'][f'Chall.sol'][f'{contract_name}']
 bytecode = contract_interface['evm']['bytecode']['object']
 abi = contract_interface['abi']
 f = open('abi','w')

@@ -9,13 +9,15 @@ Solidity CTF Instancer is an instancer that makes it easy to build and deploy so
 2. Put your challenge contract in `Chall.sol`
 3. Edit `deployment.yaml` to your preferance
 4. Run `./build.sh` to download all the required tools
-5. Run `./run.sh` to start the instancer! That's it!
+5. Run `./run.sh <port>` with the port you want to start the instancer!
+6. `nc 127.0.0.1 <port>` to connect to the instancer locally!
 
 # Special Features
 
 Solidity CTF Instancer has a lot of special features, namely:
 
 * Special intercepter which blocks anyone trying to access any account running on a specific RPC-URL. This makes the instancer secure so that any player cannot interfere with any other player.
+* Special Memory Pool features that mimics the real blockchain by having a queue of transactions (useful for challenges that require analyzing the mempool: front-running attacks for example)
 
 # How it works
 
@@ -30,16 +32,16 @@ How the instancer basically works:
 # To-Do
 
 - [ ] Make a docker container
-- [ ] Build script to download all required tools
+- [X] Build script to download all required tools
 - [X] Customizable timeout
-- [ ] Make a script to start the instancer
+- [X] Make a script to start the instancer
 - [ ] Lock/Unlock wallet mechanism (????)
 - [X] Use solc python module to compile install of truffle
 - [ ] Make the constructor arguments actually work
 - [ ] Special hashed-contracts + extra security feature
-- [ ] Requirements.txt for python packages
+- [X] Requirements.txt for python packages
 - [ ] If someone closes the connection during the deployment (Ctrl C), then stop everything (such as RPC) before exiting
-
+- [X] Custom contract names
 
 # Creator
 
