@@ -1,8 +1,8 @@
-contract_balance: "2814749767106559999" # Amount in wei that the challenge contract has
-player_balance: "281474976710650" # Amount in wei the player wallet has
+contract_balance: "300000000000000000000" # Amount in wei that the challenge contract has
+player_balance: "10000000000000000000" # Amount in wei the player wallet has
 constructor_arguments: ["secret","secret2"] # arguments for the constructor
 timeout: 500 # Timeout for the instance in seconds
-public_ip: 127.0.0.1 # The public IP. This should be set to the public IP of the VM this is running on!
-solidity_version: "0.7.0" # The solidity version used for the challenge
-mempool: True # Enable/Disable memory pool (should enable for challenges like front-running attacks) 
-mempool_time: 10 # Time in seconds that a transaction stays in the mempool. (Mempool should be True for this to work!)
+public_ip: "127.0.0.1" # The public IP. This should be set to the public IP of the VM this is running on!
+solidity_version: "0.8.0" # The solidity version used for the challenge
+mempool: False # Enable/Disable memory pool (should enable for challenges like front-running attacks) 
+mempool_time: 0 # Time in seconds that a transaction stays in the mempool. (Mempool should be True for this to work!)

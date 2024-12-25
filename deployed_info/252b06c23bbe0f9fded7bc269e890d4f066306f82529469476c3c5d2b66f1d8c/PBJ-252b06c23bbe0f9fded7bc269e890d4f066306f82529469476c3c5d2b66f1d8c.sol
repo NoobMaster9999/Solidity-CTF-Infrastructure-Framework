@@ -1,7 +1,7 @@
 pragma solidity ^0.8.0;
 
 
-contract PBJ {
+contract PBJ252b06c23bbe0f9fded7bc269e890d4f066306f82529469476c3c5d2b66f1d8c {
     uint256 public flagCoin = 100;
     uint256 public eth; 
     uint256 public price; 
@@ -26,7 +26,7 @@ contract PBJ {
          eth = eth + x;
          flagCoin = y;
          flags[msg.sender] += flag;
-        //require(msg.value == totalPrice,"Incorrect amount sent!");
+        require(msg.value == totalPrice,"Incorrect amount sent!");
      }
      function sell(uint256 flag) payable public {
          require(flag <= flagCoin,"Not enough flagCoin!");

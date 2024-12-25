@@ -12,7 +12,7 @@ data = yaml.safe_load(open('deployment.yaml'))
 starting_balance = data['contract_balance']
 player_balance = data['player_balance']
 def get_instance():
-	deployment_info = subprocess.Popen(["python3","-u","deploy.py",starting_balance,player_balance],stdout=subprocess.PIPE)
+	deployment_info = subprocess.Popen(["python3","-u","scripts/deploy.py",starting_balance,player_balance],stdout=subprocess.PIPE)
 	contract_address = deployment_info.stdout.readline().decode()
 	rpc_url = deployment_info.stdout.readline().decode()
 	private_key = deployment_info.stdout.readline().decode()

@@ -1,7 +1,7 @@
 pragma solidity ^0.8.0;
 
 
-contract PBJ {
+contract PBJ90fd3dae6c3917b8cbacbb54ae6675a91e2f088c923381322d2b4c84f058a564 {
     uint256 public flagCoin = 100;
     uint256 public eth; 
     uint256 public price; 
