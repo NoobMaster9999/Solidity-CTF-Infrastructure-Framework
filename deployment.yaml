@@ -1,8 +1,30 @@
-contract_balance: "300000000000000000000" # Amount in wei that the challenge contract has
-player_balance: "10000000000000000000" # Amount in wei the player wallet has
+contract_balance: "3000000000000000000000" # Amount in wei that the challenge contract has
+player_balance: "9000000000000000000" # Amount in wei the player wallet has
 constructor_arguments: ["secret","secret2"] # arguments for the constructor
-timeout: 500 # Timeout for the instance in seconds
+timeout: 900 # Timeout for the instance in seconds
 public_ip: "127.0.0.1" # The public IP. This should be set to the public IP of the VM this is running on!
 solidity_version: "0.8.0" # The solidity version used for the challenge
-mempool: False # Enable/Disable memory pool (should enable for challenges like front-running attacks) 
-mempool_time: 0 # Time in seconds that a transaction stays in the mempool. (Mempool should be True for this to work!)
+
+# The features below can be used to mimic the real-world blockchain "mining" system:
+mempool: True # Enable/Disable memory pool (should enable for challenges like front-running attacks) 
+mempool_time: 10 # Time in seconds that a transaction stays in the mempool. (Mempool should be True for this to work!)
+
+
+# The features below can be used to create a bot that does extra transactions
+# This is useful for challenges like front-running attacks where attackers attack other transactions.
+bot: True
+bot_interval: 15
+bot_balance: "100000000000000000000"
+bot_functions: ["buy","sell"] # Functions that bot calls on the smart contract
+function_args: ["","check_balance"] # You can make the argument as a return value from another function!
+#function_args: ["1 5","2,3 7"] 
+# In the case above, "1 5" specifies a random number between 1 and 5 as the argument for buy
+# And "2,3 7" specifies 2 as first argument for sell and random number between 3 and 7 as second argument.
+# If you do not want to use random numbers, just write "2,3" for 2 as first arg and 3 as second
+# Leave empty for no arguments. ("")
+function_value: ["10 30",""]
+# In this case, buy will be called with a random number between 10 and 30 ether while sell will be called with none. 
+function_gasPrice: [""]
+function_gas: ["999999 55000000000",""] 
+# In this case, gas is 999999 while gasPrice is 55gwei. Since sell is called without value, no need for gas
+# Cannot use random values for this. (You should'nt?)

@@ -28,7 +28,7 @@ def get_flag():
 		print("Please provide the correct hash!")
 		exit(0)
 	try:
-		f = open(f'{player_hash}/{player_hash}.txt').read()
+		f = open(f'./deployed_info/{player_hash}/{player_hash}.txt').read()
 		hash = f
 	except:
 		print("Please provide the correct hash!")
@@ -42,7 +42,7 @@ def get_flag():
 		exit(0)
 	try:
 		web3 = Web3(HTTPProvider(rpc_url))
-		f=open('abi','r').read()
+		f=open('./compiled_info/abi','r').read()
 		abi=eval(f)
 		bank = web3.eth.contract(address=contract_address,abi=abi)
 		if bank.functions.isChallSolved().call({'from':wallet_address}):
