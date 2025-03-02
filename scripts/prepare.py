@@ -31,6 +31,8 @@ contract_name = contract[x:y].replace(' ','').replace('contract','')
 contract_interface = compiled['contracts'][f'Chall.sol'][f'{contract_name}']
 bytecode = contract_interface['evm']['bytecode']['object']
 abi = contract_interface['abi']
+os.system('mkdir ./compiled_info')
+os.system('mkdir ./deployed_info')
 f = open('./compiled_info/abi','w')
 f.write(str(abi))
 b = open('./compiled_info/bytecode','w')
